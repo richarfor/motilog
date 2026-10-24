@@ -261,6 +261,36 @@ h3{font-size:clamp(16px,4.2vw,19px)}
 .photo-viewer-item figcaption span:last-child{font-weight:600;color:#d0c6dc;white-space:nowrap}
 .photo-viewer-item img{display:block;width:100%;max-height:calc(100dvh - 150px);object-fit:contain;background:#211a2b;border-radius:15px;border:1px solid rgba(255,255,255,.18)}
 
+
+/* Compact month calendar: keep all dates visible with less vertical weight. */
+.home-calendar{margin:2px 0 13px;padding:10px 11px 8px;border-radius:19px}
+.calendar-heading{margin:0 1px 5px}
+.calendar-heading h2{font-size:clamp(17px,4.4vw,20px)}
+.calendar-nav{gap:5px}
+.calendar-nav-btn{width:33px;height:33px;border-radius:11px;font-size:21px}
+.calendar-weekdays,.calendar-grid{gap:4px}
+.calendar-weekdays{margin-bottom:3px}
+.calendar-weekdays span{font-size:11px;padding:1px 0}
+.calendar-day,.calendar-blank{min-height:43px}
+.calendar-day{padding:3px 1px 2px;border-radius:9px;gap:1px}
+.calendar-day-number{font-size:clamp(13px,3.6vw,15px)}
+.calendar-day-count{min-height:10px;font-size:9px;line-height:1.05}
+.calendar-record-dot{width:5px;height:5px;top:4px;right:5px}
+.calendar-caption{font-size:11px;margin:6px 2px 0;line-height:1.4}
+.storage-management{margin:8px 2px 0;border-top:1px solid var(--line);padding-top:10px;color:var(--muted)}
+.storage-management summary{font-size:12px;font-weight:850;cursor:pointer;min-height:36px;display:flex;align-items:center;list-style-position:inside}
+.storage-management-content{padding:6px 0 10px}
+.storage-usage{font-size:12px;line-height:1.6;color:var(--ink);font-weight:750;margin-bottom:6px}
+.storage-description{font-size:11px;line-height:1.6;color:var(--muted);margin:0 0 10px}
+.storage-management-actions{display:flex;flex-wrap:wrap;gap:8px}
+.storage-management-actions button{min-height:40px}
+.photo-delete-btn{flex:none;border:1px solid rgba(255,255,255,.22);border-radius:10px;background:rgba(255,255,255,.1);color:#fff8fb;padding:7px 9px;font-size:11px;font-weight:800;min-height:34px}
+.photo-viewer-item figcaption{align-items:center;flex-wrap:wrap}
+.photo-viewer-caption-main{display:grid;gap:2px;min-width:0;flex:1}
+.photo-viewer-caption-main span:last-child{font-weight:600;color:#d0c6dc;white-space:normal}
+.game-card-actions .delete-game-btn{background:#fff0ed;color:#99534f;border-color:#f1d0cd}
+@media(max-width:380px){.home-calendar{padding:9px 8px 7px}.calendar-weekdays,.calendar-grid{gap:3px}.calendar-day,.calendar-blank{min-height:40px}.calendar-day{border-radius:8px}.calendar-record-dot{right:4px;top:4px}}
+
 </style>
 </head>
 <body>
@@ -275,6 +305,12 @@ h3{font-size:clamp(16px,4.2vw,19px)}
 <main>
 <!-- HOME / DAY LIST -->
 <section id="homeView" class="view active" aria-labelledby="homeTitle">
+  <section class="home-calendar" aria-labelledby="calendarMonthTitle">
+    <div class="calendar-heading"><h2 id="calendarMonthTitle">今月</h2><div class="calendar-nav"><button type="button" class="calendar-nav-btn" data-calendar-move="-1" aria-label="前の月">‹</button><button type="button" class="calendar-nav-btn" data-calendar-move="1" aria-label="次の月">›</button></div></div>
+    <div class="calendar-weekdays" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
+    <div id="homeCalendarGrid" class="calendar-grid" aria-label="プレイ日カレンダー"></div>
+    <p class="calendar-caption">印のある日をタップすると、その日の記録を開きます。</p>
+  </section>
   <div class="home-start-card">
     <div class="home-start-head">
       <div><h1 id="homeTitle">今日の記録</h1></div>
@@ -292,14 +328,9 @@ h3{font-size:clamp(16px,4.2vw,19px)}
       <button id="newDayBtn" class="primary wide" type="submit">記録をはじめる <span aria-hidden="true">→</span></button>
     </form>
   </div>
-  <section class="home-calendar" aria-labelledby="calendarMonthTitle">
-    <div class="calendar-heading"><h2 id="calendarMonthTitle">今月</h2><div class="calendar-nav"><button type="button" class="calendar-nav-btn" data-calendar-move="-1" aria-label="前の月">‹</button><button type="button" class="calendar-nav-btn" data-calendar-move="1" aria-label="次の月">›</button></div></div>
-    <div class="calendar-weekdays" aria-hidden="true"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
-    <div id="homeCalendarGrid" class="calendar-grid" aria-label="プレイ日カレンダー"></div>
-    <p class="calendar-caption">印のある日をタップすると、その日の記録を開きます。</p>
-  </section>
   <div class="section-head"><h2>過去の記録</h2><span class="small-muted">この端末</span></div><div id="homeDays" class="day-list"></div>
-  <div class="footer-tools"><div><strong style="font-size:12px">バックアップ</strong><div id="storageNote" class="small-muted" style="margin-top:2px">端末のブラウザ内に保存</div></div><div style="display:flex;gap:14px;align-items:center"><button id="importBtn" class="text-btn">読み込む</button><input id="importFile" class="hidden-file" type="file" accept="application/json,.json"><button id="exportBtn" class="text-btn">書き出す</button></div></div>
+  <div class="footer-tools"><div><strong style="font-size:13px">バックアップ</strong><div id="storageNote" class="small-muted" style="margin-top:3px">端末のブラウザ内に保存</div><div id="storageUsage" class="storage-usage" style="margin:5px 0 0">写真の保存量を確認中</div></div><div style="display:flex;gap:14px;align-items:center"><button id="importBtn" class="text-btn">読み込む</button><input id="importFile" class="hidden-file" type="file" accept="application/json,.json"><button id="exportBtn" class="text-btn">書き出す</button></div></div>
+  <details class="storage-management"><summary>保存容量とデータ管理</summary><div class="storage-management-content"><p id="storageDetailUsage" class="storage-usage">保存量を確認中</p><p class="storage-description">写真を削除すると端末内の画像データも整理されます。全記録の削除は取り消せないため、必要な場合は先にバックアップしてください。</p><div class="storage-management-actions"><button type="button" id="clearPhotosBtn" class="secondary small-btn">写真だけをすべて削除</button><button type="button" id="clearAllDataBtn" class="danger-btn small-btn">全記録を削除</button></div></div></details>
   <p class="fineprint">記録はこの端末のブラウザ内に保存されます。大切な記録はバックアップしてください。</p>
 </section>
 
@@ -307,7 +338,7 @@ h3{font-size:clamp(16px,4.2vw,19px)}
 <section id="dayView" class="view" aria-labelledby="dayTitle">
   <div class="page-head"><button class="back-btn" data-goto="home" aria-label="戻る"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 5 8 12l7 7"/></svg></button><div style="min-width:0"><h1 id="dayTitle">プレイ日の記録</h1><p id="daySubtitle" class="lede">その日のプレイをまとめて振り返る。</p></div></div>
   <div id="dayBudgetSummary"></div>
-  <div class="panel"><div class="panel-head"><div><div class="kicker">予算との比較</div><h2>投入額の積み上がり</h2></div></div><p class="chart-intro">点は各台の終了時点の累計。横にスクロールして時系列を確認できます。</p><div id="daySpendChart" class="chart-wrap"></div><div id="daySpendLegend" class="legend-row"></div></div>
+  <div class="panel"><div class="panel-head"><div><div class="kicker">予算との比較</div><h2>投入額の積み上がり</h2></div></div><p class="chart-intro">開始時の0円から、台ごとの累計投入額を線で表示します。</p><div id="daySpendChart" class="chart-wrap"></div><div id="daySpendLegend" class="legend-row"></div></div>
   <div class="section-head"><h2>この日に遊んだ台</h2><span id="dayGameCount" class="small-muted">0台</span></div><div id="dayGames" class="game-list"></div>
   <button id="addGameBtn" class="primary wide" style="margin-top:14px">次の台・景品を記録する <span aria-hidden="true">＋</span></button>
   <button id="reviewDayBtn" class="secondary wide" style="margin-top:10px">1日の振り返りを見る <span aria-hidden="true">→</span></button>
@@ -377,7 +408,7 @@ h3{font-size:clamp(16px,4.2vw,19px)}
   <div id="reviewSpendPanel" class="panel"><div class="kicker">投入額と予算</div><h2>投入額と予算</h2><div id="reviewSpendViz"></div></div>
   <div id="reviewMindPanel" class="panel"><div class="kicker">気持ちの記録</div><h2>3つの尺度の推移</h2><p class="chart-intro">尺度ごとに分けて表示します。点がある時点だけが記録されています。</p><div id="reviewMindChart" class="mind-chart-container"></div></div>
   <div class="panel"><div class="kicker">記録から見えること</div><h2>今回の記録から見えること</h2><p class="lede" style="font-size:11px;margin-bottom:12px">断定ではなく、次のプレイで確かめるための仮説です。</p><div id="insightList" class="insight-list"></div></div>
-  <div class="panel"><div class="kicker">プレイ履歴</div><h2>プレイ後の記録</h2><div id="timeline" class="timeline"></div></div>
+  <div id="reviewTimelinePanel" class="panel"><div class="kicker">プレイ履歴</div><h2>プレイ後の記録</h2><div id="timeline" class="timeline"></div></div>
   <div id="reviewCrossGame" class="panel hidden"><div class="kicker">台を移ったとき</div><h2>台を移ったときの気持ち</h2><div id="crossGameList" class="crossover-list"></div></div>
   <div class="review-actions"><button id="reviewMainAction" class="primary">記録に戻る</button><button id="reviewSecondaryAction" class="secondary">ホームへ</button></div>
   <p class="fineprint">この振り返りは入力された自己評価と行動記録をもとにしています。心理状態の診断や、実際の景品獲得確率の推定ではありません。</p>
@@ -465,7 +496,7 @@ function save(){
   try{pack=preparePersistedSnapshot()}catch(err){console.error('Prepare IndexedDB snapshot failed',err);toast('記録を保存する準備に失敗しました。バックアップを確認してください。',4500);return false;}
   writeQueue=writeQueue.catch(()=>{}).then(()=>writePackToIndexedDB(pack)).then(()=>{
    persistedPhotoIds=collectPhotoIds(pack.record.data);
-   const note=$('storageNote');if(note)note.textContent='この端末のIndexedDBに保存';
+   const note=$('storageNote');if(note)note.textContent='この端末のIndexedDBに保存';refreshStorageUsage();
   }).catch(err=>{
    console.error('IndexedDB save failed',err);
    toast('端末内への保存に失敗しました。空き容量を確認し、バックアップを書き出してください。',5000);
@@ -484,6 +515,23 @@ function openLocalDatabase(){return new Promise((resolve,reject)=>{
 function idbRequest(storeName,mode,action){return new Promise((resolve,reject)=>{const tx=localDb.transaction(storeName,mode);const store=tx.objectStore(storeName);let req;try{req=action(store)}catch(err){reject(err);return;}req.onsuccess=()=>resolve(req.result);req.onerror=()=>reject(req.error||new Error('IndexedDB request failed'));tx.onabort=()=>reject(tx.error||new Error('IndexedDB transaction aborted'));})}
 function readWorkspaceRecord(){return idbRequest(DB_WORKSPACE_STORE,'readonly',store=>store.get('current'))}
 function getAllMedia(){return idbRequest(DB_MEDIA_STORE,'readonly',store=>store.getAll())}
+function formatBytes(bytes){const n=Math.max(0,Number(bytes)||0);if(n<1024)return `${Math.round(n)} B`;if(n<1024*1024)return `${(n/1024).toFixed(1)} KB`;return `${(n/(1024*1024)).toFixed(1)} MB`}
+function photoRefs(work){const refs=[];forEachPhoto(work,(obj,dataKey,idKey)=>{if(typeof obj[dataKey]==='string'&&obj[dataKey].startsWith('data:image/'))refs.push({obj,dataKey,idKey,id:obj[idKey]||'',data:obj[dataKey]})});return refs}
+async function refreshStorageUsage(){
+ const compact=$('storageUsage'),detail=$('storageDetailUsage');if(!compact&&!detail)return;
+ let photoCount=0,photoBytes=0,originText='';
+ try{
+  if(persistenceMode==='indexeddb'&&localDb){
+   const refs=photoRefs(workspace),rows=await getAllMedia(),byId=new Map(rows.map(r=>[r.id,r]));photoCount=refs.length;
+   const usedIds=new Set(refs.map(r=>r.id).filter(Boolean));photoBytes=refs.reduce((sum,r)=>sum+(r.data?Math.ceil((r.data.length-String(r.data).indexOf(',')-1)*3/4):0),0);
+   if(rows.length&&usedIds.size){photoBytes=0;for(const id of usedIds){const row=byId.get(id);if(row?.blob)photoBytes+=row.blob.size||0;}}
+  }else{
+   const refs=photoRefs(workspace);photoCount=refs.length;photoBytes=refs.reduce((sum,r)=>sum+Math.ceil((r.data.length-String(r.data).indexOf(',')-1)*3/4),0);
+  }
+  if(navigator.storage?.estimate){const est=await navigator.storage.estimate();if(Number.isFinite(est.usage)&&Number.isFinite(est.quota))originText=` · サイト全体 ${formatBytes(est.usage)} / ${formatBytes(est.quota)}`;}
+ }catch(_){photoCount=photoRefs(workspace).length;photoBytes=photoRefs(workspace).reduce((sum,r)=>sum+Math.ceil((r.data.length-String(r.data).indexOf(',')-1)*3/4),0)}
+ const text=`写真 ${photoCount}枚 · 約${formatBytes(photoBytes)}${originText}`;if(compact)compact.textContent=text;if(detail)detail.textContent=text;
+}
 function dataURLToBlob(dataUrl){const comma=dataUrl.indexOf(',');if(comma<0)throw new Error('Invalid image data URL');const header=dataUrl.slice(0,comma),body=dataUrl.slice(comma+1),mime=(header.match(/^data:([^;]+)/)||[])[1]||'image/jpeg';const binary=atob(body);const bytes=new Uint8Array(binary.length);for(let i=0;i<binary.length;i++)bytes[i]=binary.charCodeAt(i);return new Blob([bytes],{type:mime});}
 function blobToDataURL(blob){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(String(reader.result||''));reader.onerror=()=>reject(reader.error||new Error('Image read failed'));reader.readAsDataURL(blob);})}
 function forEachPhoto(work,fn){(work.days||[]).forEach(d=>(d.games||[]).forEach(g=>{fn(g,'initialPhotoData','initialPhotoBlobId');(g.events||[]).forEach(e=>fn(e,'photoData','photoBlobId'));}));}
@@ -549,7 +597,7 @@ async function bootstrapPersistence(){
   }
   if(persistenceMode==='memory')setTimeout(()=>toast('永続保存が利用できません。記録のたびにバックアップを書き出してください。',5000),500);
  }
- restoreActiveGame();renderHome();
+ restoreActiveGame();renderHome();await refreshStorageUsage();
  if(overlay)overlay.classList.add('hidden');
 }
 
@@ -623,7 +671,7 @@ function renderHomeCalendar(days){
  grid.querySelectorAll('[data-calendar-date]').forEach(btn=>btn.addEventListener('click',()=>{
   const recordId=btn.dataset.calendarRecord,date=btn.dataset.calendarDate;
   if(recordId){activeDayId=recordId;showView('day');return;}
-  $('dayDate').value=date;renderHomeCalendar(days);toast(`${dateLabel(date)}を開始日として選択しました`);
+  $('dayDate').value=date;renderHomeCalendar(days);toast(`${dateLabel(date)}を開始日として選択しました`);setTimeout(()=>$('daySetupForm')?.scrollIntoView({behavior:'smooth',block:'center'}),80);
  }));
  document.querySelectorAll('[data-calendar-move]').forEach(btn=>{btn.onclick=()=>{calendarCursor=new Date(year,month+Number(btn.dataset.calendarMove),1);renderHomeCalendar(workspace.days.slice().sort((a,b)=>(b.dateKey||'').localeCompare(a.dateKey||'')))};});
 }
@@ -642,13 +690,27 @@ function openNewDay(){delete $('daySetupForm').dataset.editing;$('dayDate').valu
 function openNewGame(){const d=getDay();if(!d)return;$('gamePrizeName').value='フィギュア';$('gameUnit').value='100';$('gameUnitCustom').value='';$('gameBudget').value='500';mountMetrics('openingMetricMount','opening');resetMetrics('opening');showView('gameSetup')}
 
 function renderDay(){const d=getDay();if(!d){showView('home');return}const spend=daySpend(d),games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt));$('dayTitle').textContent=dateLabel(d.dateKey)+' の台一覧';$('daySubtitle').textContent=(d.venue?d.venue+' · ':'')+dateLong(d.dateKey);$('dayGameCount').textContent=games.length+'台';$('dayBudgetSummary').innerHTML=budgetCard(spend,d.budget,dayMaxBudget(d),d.burgerPrice,'この日の累計投入額',`${games.length}台を記録`);$('daySpendChart').innerHTML=makeDaySpendChart(d);$('daySpendLegend').innerHTML=`<span class="legend"><i style="background:#8976c8"></i>累計投入</span><span class="legend"><i style="background:#d9877f"></i>今日の予算</span><span class="legend"><i style="background:#e4bd58"></i>許容できる上限</span>`;
- const list=$('dayGames');if(!games.length){list.innerHTML=`<div class="empty-state"><strong>まだ台の記録がありません</strong><p>次の台・景品を追加すると、ここにプレイ順で並びます。</p></div>`}else{list.innerHTML=games.map((g,i)=>{const n=gamePlayCount(g),spent=gameSpend(g),last=getSamples(g).at(-1),closed=!!g.endedAt;return `<article class="game-card"><div class="game-number">${String(i+1).padStart(2,'0')}</div><div class="game-main"><h3>${esc(g.prizeName||'景品名未設定')}</h3><div class="game-sub">${timeLabel(g.startedAt||g.createdAt)} · ${closed?'終了済み':'記録中'} · ${n}プレイ · ${yen(g.unitCost)}/回${last?' · '+esc(metricStateText(last.metrics)):''}</div><div class="game-card-actions"><button type="button" class="secondary small-btn" data-open-game="${esc(g.id)}">${closed?'この台の振り返りを見る':'この台の記録を開く'}</button></div></div><div class="game-spend">${yen(spent)}</div></article>`}).join('');list.querySelectorAll('[data-open-game]').forEach(b=>b.addEventListener('click',()=>{activeGameId=b.dataset.openGame;const g=getGame();if(g?.endedAt){reviewKind='game';reviewId=g.id;showView('review')}else showView('play')}))}
+ const list=$('dayGames');if(!games.length){list.innerHTML=`<div class="empty-state"><strong>まだ台の記録がありません</strong><p>次の台・景品を追加すると、ここにプレイ順で並びます。</p></div>`}else{list.innerHTML=games.map((g,i)=>{const n=gamePlayCount(g),spent=gameSpend(g),last=getSamples(g).at(-1),closed=!!g.endedAt;return `<article class="game-card"><div class="game-number">${String(i+1).padStart(2,'0')}</div><div class="game-main"><h3>${esc(g.prizeName||'景品名未設定')}</h3><div class="game-sub">${timeLabel(g.startedAt||g.createdAt)} · ${closed?'終了済み':'記録中'} · ${n}プレイ · ${yen(g.unitCost)}/回${last?' · '+esc(metricStateText(last.metrics)):''}</div><div class="game-card-actions"><button type="button" class="secondary small-btn" data-open-game="${esc(g.id)}">${closed?'この台を振り返る':'記録を続ける'}</button><button type="button" class="ghost small-btn delete-game-btn" data-delete-game="${esc(g.id)}">削除</button></div></div><div class="game-spend">${yen(spent)}</div></article>`}).join('');list.querySelectorAll('[data-open-game]').forEach(b=>b.addEventListener('click',()=>{activeGameId=b.dataset.openGame;const g=getGame();if(g?.endedAt){reviewKind='game';reviewId=g.id;showView('review')}else showView('play')}));list.querySelectorAll('[data-delete-game]').forEach(b=>b.addEventListener('click',()=>deleteGameRecord(b.dataset.deleteGame)))}
  $('reviewDayBtn').disabled=!games.length;$('reviewDayBtn').style.opacity=games.length?1:.5;
 }
 
 function budgetCard(spend,budget,maxBudget,burgerPrice,label,sub,scope='day'){const s=Math.max(0,Number(spend)||0),planned=Math.max(0,Number(budget)||0),upper=Math.max(planned,Number(maxBudget)||planned),scale=Math.max(upper,s,1),fill=Math.min(100,s/scale*100),plannedMark=Math.min(100,planned/scale*100),over=s>planned,aboveUpper=s>upper;const status=scope==='game'?(over?`この台の目安を ${yen(s-planned)} 超過`:`この台の目安まで ${yen(planned-s)} 残り`):aboveUpper?`許容上限を ${yen(s-upper)} 超過`:over?`予算を ${yen(s-planned)} 超過 · 許容上限までは ${yen(upper-s)}`:`予算まで ${yen(planned-s)} 残り`;const tone=aboveUpper?'#e9857d':over?'#e4bd58':'#82c5a9';const side=scope==='game'?`<strong>${yen(planned)}</strong>この台の目安`:`<strong>${yen(planned)}</strong>今日の予算<br><strong>${yen(upper)}</strong>許容上限`;const ticks=scope==='game'?`<div class="budget-ticks"><span>¥0</span><span>目安 ${yen(planned)}</span></div>`:`<div class="budget-ticks"><span>¥0</span><span>予算 ${yen(planned)}</span><span>上限 ${yen(upper)}</span></div>`;return `<div class="day-summary"><div class="summary-row"><div><div class="summary-label">${esc(label)}</div><div class="summary-amount">${yen(s)}</div></div><div class="summary-side">${side}</div></div><div class="budget-meter budget-meter-v2"><span class="budget-budget-marker" style="left:${plannedMark}%"></span><span class="budget-fill" style="width:${fill}%;background:${tone}"></span></div>${ticks}<div class="budget-status ${aboveUpper?'over-status':''}">${esc(status)}${sub?' · '+esc(sub):''}</div></div>`}
 
-function makeDaySpendChart(d){const games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt)),budget=Number(d.budget)||1,upper=dayMaxBudget(d);if(!games.length)return `<div class="empty-state" style="padding:18px"><strong>台を記録するとグラフが表示されます</strong><p>台ごとの累計投入額を、予算と許容上限に重ねて表示します。</p></div>`;const vals=[0];let total=0;games.forEach(g=>{total+=gameSpend(g);vals.push(total)});const rawMax=Math.max(upper,...vals,1),step=niceYenStep(rawMax/3),max=Math.max(step,Math.ceil(rawMax/step)*step);const W=Math.max(320,76+Math.max(1,vals.length-1)*66+16),H=205,left=56,right=16,top=15,bottom=42,pw=W-left-right,ph=H-top-bottom;const x=i=>left+(vals.length===1?pw/2:i/(vals.length-1))*pw,y=v=>top+ph-(v/max)*ph;let grid='';for(let v=0;v<=max+0.001;v+=step){const yy=y(v);grid+=`<line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" stroke="#e9e1eb" stroke-width="1"/><text x="${left-8}" y="${yy+4}" text-anchor="end" font-size="12" fill="#807689">${formatAxisYen(v)}</text>`}const refs=`<line x1="${left}" y1="${y(budget)}" x2="${W-right}" y2="${y(budget)}" stroke="#d9877f" stroke-width="1.8" stroke-dasharray="5 4"><title>今日の予算 ${yen(budget)}</title></line><line x1="${left}" y1="${y(upper)}" x2="${W-right}" y2="${y(upper)}" stroke="#e0bd5e" stroke-width="1.8" stroke-dasharray="3 4"><title>許容上限 ${yen(upper)}</title></line>`;const dots=vals.map((v,i)=>{const title=i===0?'開始時':`${i}台目終了 · ${timeLabel(games[i-1]?.endedAt||games[i-1]?.startedAt)} · ${yen(v)}`;const label=i===0?'開始':`${i}台`;return `<circle cx="${x(i)}" cy="${y(v)}" r="5.5" fill="#8976c8" stroke="#fffefa" stroke-width="2"><title>${esc(title)}</title></circle><text x="${x(i)}" y="${H-15}" text-anchor="middle" font-size="12" fill="#665b75">${label}</text>`}).join('');return `<svg class="chart-svg wide-chart-svg" viewBox="0 0 ${W} ${H}" style="width:${W}px;max-width:none" role="img" aria-label="各台の終了時点ごとの累計投入額。点は開始時と各台の終了時を示します">${grid}${refs}${dots}</svg>`}
+function makeDaySpendChart(d){
+ const games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt));
+ const budget=Number(d.budget)||1,upper=dayMaxBudget(d);
+ if(!games.length)return `<div class="empty-state" style="padding:18px"><strong>台を記録するとグラフが表示されます</strong><p>開始時の0円から、各台の終了時点まで累計額を線で追えます。</p></div>`;
+ const vals=[0];let total=0;games.forEach(g=>{total+=gameSpend(g);vals.push(total)});
+ const rawMax=Math.max(upper,...vals,1),step=niceYenStep(rawMax/5),max=Math.max(step,Math.ceil(rawMax/step)*step);
+ const W=Math.max(340,88+games.length*78+12),H=214,left=58,right=18,top=16,bottom=46,pw=W-left-right,ph=H-top-bottom;
+ const x=i=>left+(i/Math.max(1,vals.length-1))*pw,y=v=>top+ph-(v/max)*ph;
+ let grid='';for(let v=0;v<=max+0.001;v+=step){const yy=y(v);grid+=`<line x1="${left}" y1="${yy}" x2="${W-right}" y2="${yy}" stroke="${v===0?'#cfc3d7':'#e9e1eb'}" stroke-width="${v===0?1.6:1}"/><text x="${left-8}" y="${yy+4}" text-anchor="end" font-size="12" fill="#6f647c">${formatAxisYen(v)}</text>`}
+ const refs=`<line x1="${left}" y1="${y(budget)}" x2="${W-right}" y2="${y(budget)}" stroke="#d9877f" stroke-width="1.8" stroke-dasharray="5 4"><title>今日の予算 ${yen(budget)}</title></line><line x1="${left}" y1="${y(upper)}" x2="${W-right}" y2="${y(upper)}" stroke="#e0bd5e" stroke-width="1.8" stroke-dasharray="3 4"><title>許容上限 ${yen(upper)}</title></line>`;
+ const path=vals.map((v,i)=>`${i?'L':'M'}${x(i)} ${y(v)}`).join(' ');
+ const line=`<path d="${path}" fill="none" stroke="#8976c8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>`;
+ const dots=vals.map((v,i)=>{const game=games[i-1],pointStatus=game?(game.endedAt?'終了時点':'現在'):'開始時';const title=i===0?`開始時 · 累計 ${yen(v)}`:`${i}台目の${pointStatus} · ${timeLabel(game?.endedAt||game?.startedAt)} · 累計 ${yen(v)}`;const label=i===0?'開始':`${i}台目`;return `<circle cx="${x(i)}" cy="${y(v)}" r="6" fill="#8976c8" stroke="#fffefa" stroke-width="2.5" tabindex="0" role="img" aria-label="${esc(title)}"><title>${esc(title)}</title></circle><text x="${x(i)}" y="${H-17}" text-anchor="middle" font-size="12" font-weight="700" fill="#55486a">${label}</text>`}).join('');
+ return `<svg class="chart-svg wide-chart-svg" viewBox="0 0 ${W} ${H}" style="width:${W}px;max-width:none" role="img" aria-label="開始時の0円から各台終了時点の累計投入額までを線で示すグラフ。予算と許容上限を水平線で表示。">${grid}${refs}${line}${dots}</svg>`;
+}
 
 function startGameForm(){const d=getDay();if(!d){toast('先にプレイ日を作成してください');return}const name=$('gamePrizeName').value.trim();if(!name){toast('景品名を入力してください');$('gamePrizeName').focus();return}const custom=Number($('gameUnitCustom').value)||0,unit=custom>0?custom:(Number($('gameUnit').value)||100);const budget=Number($('gameBudget').value);if(!unit||!Number.isFinite(budget)||budget<100){toast('料金と台の目安金額を確認してください');return}const metrics=readMetrics('opening');if(!metrics){toast('開始時の気持ちを記録してください');return}const now=new Date().toISOString();const game={id:uid(),prizeName:name,unitCost:unit,gameBudget:budget,createdAt:now,startedAt:now,endedAt:null,openingState:{metrics,at:now},openingSpendDay:daySpend(d),initialPhotoData:'',initialPhotoAt:null,outcome:null,stopReason:'',awaitingNextDecision:false,events:[]};d.games.push(game);activeGameId=game.id;save();showView('play');toast('台の記録を開始しました')}
 
@@ -683,16 +745,29 @@ function renderGameInsights(g){const samples=getSamples(g),plays=(g.events||[]).
 
 function renderTimeline(g){const events=allEvents(g).filter(e=>e.type==='play'||e.type==='photo');if(g.initialPhotoData)events.push({id:'initial-position-photo',type:'photo',context:'initial',at:g.initialPhotoAt||g.startedAt||g.createdAt,photoData:g.initialPhotoData,spendGameAt:0});events.sort((a,b)=>new Date(a.at)-new Date(b.at));if(!events.length)return `<div class="empty-state"><strong>まだプレイ後の記録がありません</strong><p>記録した内容が、ここに時間順で表示されます。</p></div>`;return events.slice().reverse().map((e,idx)=>{if(e.type==='photo')return `<div class="time-card"><div class="time-rail"><div class="time-dot" style="background:#72bba2"></div><div class="time-line"></div></div><div class="time-body"><div class="time-top"><strong>${esc(e.context==='initial'?'初期位置の写真':'プレイ中の写真')}</strong><time>${timeLabel(e.at)}</time></div>${e.photoData?`<img class="time-photo" data-photo-id="${esc(e.id)}" src="${e.photoData}" alt="景品の写真を拡大" tabindex="0" role="button">`:''}<div class="time-meta">撮影時の投入額 ${yen(e.spendGameAt||0)}</div></div></div>`;const c=aimCells.find(a=>a.id===e.aim);return `<div class="time-card"><div class="time-rail"><div class="time-dot"></div><div class="time-line"></div></div><div class="time-body"><div class="time-top"><strong>${e.status==='pending'?'プレイ料金を投入・結果未記録':'プレイ後の記録'} · ${yen(e.amount)}</strong><time>${timeLabel(e.at)}</time></div><div class="time-meta">狙った位置：${c?esc(c.label):'未記録'} · 台の累計 ${yen(e.spendGameAt||0)} · 1日の累計 ${yen(e.spendDayAt||0)}</div>${metricsComplete(e.metrics)?`<div class="tag-row"><span class="tag">獲得への期待 ${e.metrics[HOPE]}/5</span><span class="tag loss">支出への引っ張られ ${e.metrics[SUN]}/5</span><span class="tag mint">取れそう感 ${e.metrics[CHANCE]}/5</span></div>`:''}${e.photoData?`<img class="time-photo" data-photo-id="${esc(e.id)}" src="${e.photoData}" alt="プレイ時の景品の写真を拡大" tabindex="0" role="button">`:''}</div></div>`}).join('')}
 function dayCrossovers(d){const games=(d.games||[]).slice().sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt)),out=[];for(let i=1;i<games.length;i++){const prev=games[i-1],cur=games[i],a=getSamples(prev).at(-1),b=cur.openingState&&metricsComplete(cur.openingState.metrics)?{metrics:cur.openingState.metrics,at:cur.openingState.at}:null;if(!a||!b)continue;out.push({from:prev,to:cur,a:a.metrics,b:b.metrics})}return out}
-function renderDayReview(d){$('reviewTitle').textContent='1日の振り返り';$('reviewSubtitle').textContent='台を移った順番と、気持ち・支出の関係を見返します。';const spend=daySpend(d),games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt)),plays=games.reduce((a,g)=>a+gamePlayCount(g),0);$('reviewHero').innerHTML=`<div class="kicker">1日の振り返り · ${dateLabel(d.dateKey)}</div><h1>${esc(d.venue||'今日のプレイ')}</h1><p>${esc(dateLong(d.dateKey))} · ${games.length}台 · ${plays}プレイ<br>台を移った順番と、そのときの気持ちをまとめて見返します。</p>`;
- $('reviewMetrics').innerHTML=`<div class="review-metric"><div class="label">1日の累計投入</div><div class="value">${yen(spend)}</div><div class="hint">今日の予算 ${yen(d.budget)}</div></div><div class="review-metric"><div class="label">記録した台・プレイ</div><div class="value">${games.length}<span style="font-size:12px">台 / ${plays}回</span></div><div class="hint">記録したゲームの数</div></div><div class="review-metric"><div class="label">許容上限との差</div><div class="value">${spend>dayMaxBudget(d)?yen(spend-dayMaxBudget(d))+'超過':yen(dayMaxBudget(d)-spend)+'残り'}</div><div class="hint">上限 ${yen(dayMaxBudget(d))}</div></div>`;
- $('reviewSpendViz').innerHTML=budgetCard(spend,d.budget,dayMaxBudget(d),d.burgerPrice,'1日の累計投入額',`${games.length}台を記録`)+`<div class="chart-wrap">${makeDaySpendChart(d)}</div><div class="legend-row" style="margin-top:10px"><span class="legend"><i style="background:#8976c8"></i>累計投入</span><span class="legend"><i style="background:#d9877f"></i>今日の予算</span><span class="legend"><i style="background:#e4bd58"></i>許容できる上限</span></div>`;
- $('reviewMindPanel').classList.add('hidden');$('reviewCrossGame').classList.remove('hidden');const xovers=dayCrossovers(d);$('crossGameList').innerHTML=xovers.length?xovers.map(x=>`<div class="crossover"><strong>${esc(x.from.prizeName)} → ${esc(x.to.prizeName)}</strong><p>獲得への期待：${x.a[HOPE]}/5 → ${x.b[HOPE]}/5<br>過去の支出への引っ張られ：${x.a[SUN]}/5 → ${x.b[SUN]}/5<br>今の取れそう感：${x.a[CHANCE]}/5 → ${x.b[CHANCE]}/5</p></div>`).join(''):`<div class="empty-state" style="padding:16px"><strong>台をまたいだ比較に必要な記録がまだありません</strong><p>前の台の最後の評価と、次の台の開始時評価がそろうと、持ち越しを比較できます。</p></div>`;
- $('insightList').innerHTML=renderDayInsights(d);$('timeline').innerHTML=games.length?games.map((g,i)=>`<div class="time-card"><div class="time-rail"><div class="time-dot"></div><div class="time-line"></div></div><div class="time-body"><div class="time-top"><strong>${i+1}. ${esc(g.prizeName)}</strong><time>${timeLabel(g.startedAt||g.createdAt)} · ${gamePlayCount(g)}プレイ</time></div><div class="time-meta">投入 ${yen(gameSpend(g))} · ${g.endedAt?`終了時の納得感：${Number(g.exitAcceptance)||3}/5`:'記録中'} · ${g.outcome?esc(outcomeLabel(g.outcome)):''}</div><div class="game-card-actions"><button class="secondary small-btn" data-day-review-game="${esc(g.id)}">この台の記録を見る</button></div></div></div>`).join(''):`<div class="empty-state"><strong>この日はまだ台の記録がありません</strong></div>`;$('timeline').querySelectorAll('[data-day-review-game]').forEach(b=>b.addEventListener('click',()=>{reviewKind='game';reviewId=b.dataset.dayReviewGame;activeGameId=reviewId;showView('review')}));$('reviewMainAction').textContent='この日の台一覧へ戻る';$('reviewMainAction').onclick=()=>showView('day');$('reviewSecondaryAction').textContent='ホームへ戻る';$('reviewSecondaryAction').onclick=()=>showView('home')}
+function renderDayReview(d){
+ const spend=daySpend(d),games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt)),plays=games.reduce((a,g)=>a+gamePlayCount(g),0);
+ $('reviewTitle').textContent='1日の振り返り';
+ $('reviewSubtitle').textContent='支出と、台を移ったときの気持ちを確認します。';
+ $('reviewHero').innerHTML=`<div class="kicker">${dateLabel(d.dateKey)}</div><h1>${esc(d.venue||'この日のプレイ')}</h1><p>${esc(dateLong(d.dateKey))} · ${games.length}台 · ${plays}プレイ</p>`;
+ $('reviewMetrics').classList.add('hidden');
+ $('reviewSpendPanel').querySelector('.kicker').textContent='今日の予算';
+ $('reviewSpendPanel').querySelector('h2').textContent='累計投入額';
+ $('reviewSpendViz').innerHTML=budgetCard(spend,d.budget,dayMaxBudget(d),d.burgerPrice,'1日の累計投入額',`${games.length}台 · ${plays}プレイ`);
+ $('reviewMindPanel').classList.add('hidden');
+ $('reviewTimelinePanel').classList.add('hidden');
+ $('reviewCrossGame').classList.remove('hidden');
+ const xovers=dayCrossovers(d);
+ $('crossGameList').innerHTML=xovers.length?xovers.map(x=>`<div class="crossover"><strong>${esc(x.from.prizeName)} → ${esc(x.to.prizeName)}</strong><p>獲得への期待：${x.a[HOPE]}/5 → ${x.b[HOPE]}/5<br>過去の支出への引っ張られ：${x.a[SUN]}/5 → ${x.b[SUN]}/5<br>今の取れそう感：${x.a[CHANCE]}/5 → ${x.b[CHANCE]}/5</p></div>`).join(''):`<div class="empty-state" style="padding:16px"><strong>台をまたいだ比較に必要な記録がまだありません</strong><p>前の台の最後の評価と、次の台の開始時評価がそろうと、持ち越しを比較できます。</p></div>`;
+ $('insightList').innerHTML=renderDayInsights(d);
+ $('reviewMainAction').textContent='この日の台一覧へ戻る';$('reviewMainAction').onclick=()=>showView('day');
+ $('reviewSecondaryAction').textContent='ホームへ戻る';$('reviewSecondaryAction').onclick=()=>showView('home');
+}
 
 function renderDayInsights(d){const games=(d.games||[]).slice().sort((a,b)=>new Date(a.startedAt||a.createdAt)-new Date(b.startedAt||b.createdAt)),spent=daySpend(d),out=[];if(spent>Number(d.budget||0))out.push(['01','今日の予算を超えた',`累計投入額は予算を${yen(spent-Number(d.budget||0))}上回りました。許容上限との差も上のグラフで確認できます。`]);if(spent>dayMaxBudget(d))out.push(['02','許容上限も超えた',`累計投入額は、自分で設定した上限を${yen(spent-dayMaxBudget(d))}上回りました。超過した事実と、そのときの気持ちは分けて振り返りましょう。`]);const xs=dayCrossovers(d);if(xs.length){const hopeChanged=xs.filter(x=>x.a[HOPE]!==x.b[HOPE]).length,sunkChanged=xs.filter(x=>x.a[SUN]!==x.b[SUN]).length;if(hopeChanged||sunkChanged)out.push(['03','台を移るときの気持ち',`${xs.length}回の台移動で、前の台の終了時と次の台の開始時を比較できます。そのうち、獲得への期待が変化した組み合わせは${hopeChanged}回、過去の支出への引っ張られが変化した組み合わせは${sunkChanged}回でした。これは記録された評価の差で、原因を断定するものではありません。`])}if(!games.length||games.every(g=>!getSamples(g).length))out.push(['04','次回の比較に向けて','台ごとの開始時とプレイ後の気持ちを記録すると、台をまたいだ変化も見られるようになります。']);if(!out.length)out.push(['01','一日の記録ができました','累計投入額、各台での判断、終了時の納得感を次の訪問時と比較できます。']);return out.map(([n,t,dsc])=>`<div class="insight"><div class="insight-mark">${n}</div><div><strong>${esc(t)}</strong><p>${esc(dsc)}</p></div></div>`).join('')}
 
 function renderGameReview(g,d){$('reviewTitle').textContent='クレーンゲームの振り返り';$('reviewSubtitle').textContent=`${g.prizeName} · プレイごとの気持ちと投入額`;const spend=gameSpend(g),plays=gamePlayCount(g),samples=getSamples(g),photos=Number(!!g.initialPhotoData)+(g.events||[]).filter(e=>e.photoData).length;$('reviewHero').innerHTML=`<div class="kicker">この台の振り返り</div><h1>${esc(g.prizeName)}</h1><p>${esc(dateLong(d.dateKey))} · ${esc(d.venue||'ゲームセンター')}<br>${g.endedAt?'終了済み':'記録中'} · ${yen(g.unitCost)} / 1プレイ · 開始 ${timeLabel(g.startedAt)}</p>`;
- $('reviewMetrics').innerHTML=`<div class="review-metric"><div class="label">この台の投入額</div><div class="value">${yen(spend)}</div><div class="hint">目安 ${yen(g.gameBudget)} · ${spend>g.gameBudget?yen(spend-g.gameBudget)+'超過':yen(g.gameBudget-spend)+'残り'}</div></div><div class="review-metric"><div class="label">プレイ回数</div><div class="value">${plays}<span style="font-size:12px;margin-left:3px">回</span></div><div class="hint">写真 ${photos}枚 · 気持ちの記録 ${samples.length}点</div></div><div class="review-metric"><div class="label">終了時の納得感</div><div class="value">${g.endedAt?(Number(g.exitAcceptance)||3)+'/5':'—'}</div><div class="hint">${g.endedAt?({1:'心残りがかなり強い',2:'少し心残りがある',3:'どちらともいえない',4:'おおむね納得している',5:'納得して終われる'}[Number(g.exitAcceptance)||3]):'終了後に記録します'}</div></div>`;
+ $('reviewMetrics').classList.remove('hidden');$('reviewSpendPanel').querySelector('.kicker').textContent='投入額と予算';$('reviewSpendPanel').querySelector('h2').textContent='投入額と予算';$('reviewTimelinePanel').classList.remove('hidden');$('reviewMetrics').innerHTML=`<div class="review-metric"><div class="label">この台の投入額</div><div class="value">${yen(spend)}</div><div class="hint">目安 ${yen(g.gameBudget)} · ${spend>g.gameBudget?yen(spend-g.gameBudget)+'超過':yen(g.gameBudget-spend)+'残り'}</div></div><div class="review-metric"><div class="label">プレイ回数</div><div class="value">${plays}<span style="font-size:12px;margin-left:3px">回</span></div><div class="hint">写真 ${photos}枚 · 気持ちの記録 ${samples.length}点</div></div><div class="review-metric"><div class="label">終了時の納得感</div><div class="value">${g.endedAt?(Number(g.exitAcceptance)||3)+'/5':'—'}</div><div class="hint">${g.endedAt?({1:'心残りがかなり強い',2:'少し心残りがある',3:'どちらともいえない',4:'おおむね納得している',5:'納得して終われる'}[Number(g.exitAcceptance)||3]):'終了後に記録します'}</div></div>`;
  $('reviewSpendViz').innerHTML=budgetCard(spend,g.gameBudget,g.gameBudget,d.burgerPrice,'この台の累計投入額',`今日の予算 ${yen(d.budget)} · 許容上限 ${yen(dayMaxBudget(d))}`,'game');$('reviewMindPanel').classList.remove('hidden');$('reviewMindChart').innerHTML=makeMindChart(g);$('insightList').innerHTML=renderGameInsights(g);$('timeline').innerHTML=renderTimeline(g);$('reviewCrossGame').classList.add('hidden');$('reviewMainAction').textContent=g.endedAt?'この日の台一覧へ戻る':'この台の記録へ戻る';$('reviewMainAction').onclick=()=>{if(g.endedAt)showView('day');else showView('play')};$('reviewSecondaryAction').textContent='ホームへ戻る';$('reviewSecondaryAction').onclick=()=>showView('home')}
 
 function renderReview(){const d=getDay();if(reviewKind==='day'){if(!d){showView('home');return}renderDayReview(d);return}const g=getGame(activeDayId,reviewId||activeGameId);if(!g||!d){showView('home');return}renderGameReview(g,d)}
@@ -708,9 +783,41 @@ $('payPlayBtn').addEventListener('click',startPaidPlay);$('recordPlayBtn').addEv
 $('finishOutcome').querySelectorAll('[data-outcome]').forEach(b=>b.addEventListener('click',()=>{finishOutcome=b.dataset.outcome;$('finishOutcome').querySelectorAll('[data-outcome]').forEach(x=>x.classList.toggle('selected',x===b))}));$('finishCloseBtn').addEventListener('click',closeFinish);$('finishModal').addEventListener('click',e=>{if(e.target===$('finishModal'))closeFinish()});$('confirmFinishBtn').addEventListener('click',confirmFinish);
 $('editDayBtn').addEventListener('click',()=>{const d=getDay();if(!d)return;$('dayDate').value=d.dateKey;$('dayVenue').value=d.venue||'';$('dayBudgetCustom').value=d.budget;$('dayMaxBudget').value=dayMaxBudget(d);const submit=$('daySetupForm').querySelector('button[type="submit"]');submit.textContent='設定を保存する';$('daySetupForm').dataset.editing=d.id;showView('home');window.scrollTo({top:0,behavior:'smooth'})});
 // Edit existing day using the same form without duplicating the parent record.
-$('deleteDayBtn').addEventListener('click',()=>{const d=getDay();if(!d)return;if(!confirm('このプレイ日と、すべての台・写真の記録を削除します。よろしいですか？'))return;workspace.days=workspace.days.filter(x=>x.id!==d.id);activeDayId=null;activeGameId=null;save();showView('home');toast('プレイ日の記録を削除しました')});
+$('deleteDayBtn').addEventListener('click',async()=>{const d=getDay();if(!d)return;if(!confirm('このプレイ日と、すべての台・写真の記録を削除します。よろしいですか？'))return;workspace.days=workspace.days.filter(x=>x.id!==d.id);activeDayId=null;activeGameId=null;save();await waitForWrites();showView('home');await refreshStorageUsage();toast('プレイ日の記録と関連写真を削除しました')});
 
 
+
+async function waitForWrites(){try{await writeQueue}catch(_){}}
+async function deleteGameRecord(gameId){
+ const d=getDay();if(!d)return;const g=d.games.find(x=>x.id===gameId);if(!g)return;
+ if(!confirm(`「${g.prizeName||'この台'}」の記録と関連写真を削除します。この操作は取り消せません。よろしいですか？`))return;
+ d.games=d.games.filter(x=>x.id!==gameId);if(activeGameId===gameId){activeGameId=null;reviewId=null;activePendingPlayId=null;}
+ save();await waitForWrites();renderDay();await refreshStorageUsage();toast('台の記録と関連写真を削除しました');
+}
+async function deleteCurrentPhoto(photoId){
+ const g=getGame();if(!g)return;const before=getPhotosForCurrentGame();const oldIndex=Math.max(0,before.findIndex(p=>p.id===photoId));
+ if(photoId==='initial-position-photo'){g.initialPhotoData='';delete g.initialPhotoBlobId;g.initialPhotoAt=null;}else{
+  const e=(g.events||[]).find(x=>x.id===photoId);if(!e)return;
+  e.photoData='';delete e.photoBlobId;e.photoAt=null;
+  if(e.type==='photo')g.events=g.events.filter(x=>x.id!==photoId);
+ }
+ save();await waitForWrites();await refreshStorageUsage();
+ const currentView=document.querySelector('.view.active')?.id;if(currentView==='reviewView')renderReview();else if(currentView==='playView')renderPlay();
+ const remaining=getPhotosForCurrentGame();if(!remaining.length){closePhotoViewer();toast('写真を削除しました');return;}
+ closePhotoViewer();openPhotoViewer(remaining[Math.min(oldIndex,remaining.length-1)].id);toast('写真を削除しました');
+}
+async function clearAllPhotos(){
+ const refs=photoRefs(workspace);if(!refs.length){toast('削除する写真はありません');return;}
+ if(!confirm(`保存している写真${refs.length}枚をすべて削除します。プレイ記録と評価は残ります。よろしいですか？`))return;
+ forEachPhoto(workspace,(obj,dataKey,idKey)=>{obj[dataKey]='';delete obj[idKey];});
+ save();await waitForWrites();const currentView=document.querySelector('.view.active')?.id;if(currentView==='reviewView')renderReview();else if(currentView==='playView')renderPlay();renderHome();await refreshStorageUsage();toast('すべての写真を削除しました');
+}
+async function clearAllRecords(){
+ if(!workspace.days.length){toast('削除する記録はありません');return;}
+ if(!confirm('すべての日付・台・プレイ記録と写真を削除します。バックアップがない記録は復元できません。続けますか？'))return;
+ if(!confirm('本当にすべての記録を削除しますか？'))return;
+ workspace={days:[],metricScaleVersion:2};activeDayId=null;activeGameId=null;reviewId=null;activePendingPlayId=null;aimSelection='c';save();await waitForWrites();try{storage.removeItem(STORE_KEY);storage.removeItem(LEGACY_KEY)}catch(_){};renderHome();await refreshStorageUsage();showView('home');toast('すべての記録と写真を削除しました');
+}
 
 /* Photo input uses the device camera/file picker; no in-page camera stream is opened. */
 function selectPhoto(context='moment'){const g=getGame();if(!g)return;cameraContext=context;const pending=(g.events||[]).find(e=>e.type==='play'&&e.status==='pending');if(context==='moment'&&!pending){toast('プレイ後の記録画面から写真を追加してください');return}$('photoFileInput').value='';$('photoFileInput').click()}
@@ -730,17 +837,19 @@ function getPhotosForCurrentGame(){
 }
 function openPhotoViewer(startId){
  const photos=getPhotosForCurrentGame();if(!photos.length){toast('表示できる写真がありません');return;}
- const gallery=$('photoViewerGallery');gallery.innerHTML=photos.map(p=>`<figure class="photo-viewer-item" data-gallery-photo="${esc(p.id)}"><figcaption><span>${esc(p.title)}</span><span>${timeLabel(p.at)}${p.spend?` · 累計 ${yen(p.spend)}`:''}</span></figcaption><img src="${p.data}" alt="${esc(p.title)}"></figure>`).join('');
+ const gallery=$('photoViewerGallery');gallery.innerHTML=photos.map(p=>`<figure class="photo-viewer-item" data-gallery-photo="${esc(p.id)}"><figcaption><div class="photo-viewer-caption-main"><strong>${esc(p.title)}</strong><span>${timeLabel(p.at)}${p.spend?` · 累計 ${yen(p.spend)}`:''}</span></div><button type="button" class="photo-delete-btn" data-delete-photo="${esc(p.id)}">この写真を削除</button></figcaption><img src="${p.data}" alt="${esc(p.title)}"></figure>`).join('');
  $('photoViewerTitle').textContent=`写真 ${photos.length}枚`;$('photoViewer').classList.add('open');document.body.style.overflow='hidden';
  requestAnimationFrame(()=>{const target=Array.from(gallery.querySelectorAll('[data-gallery-photo]')).find(el=>el.dataset.galleryPhoto===startId);if(target)target.scrollIntoView({block:'start',behavior:'auto'});});
 }
 function closePhotoViewer(){$('photoViewer').classList.remove('open');document.body.style.overflow='';}
 $('photoViewerClose').addEventListener('click',closePhotoViewer);
+$('photoViewerGallery').addEventListener('click',e=>{const b=e.target.closest('[data-delete-photo]');if(!b)return;e.preventDefault();e.stopPropagation();deleteCurrentPhoto(b.dataset.deletePhoto)});
 $('photoViewer').addEventListener('click',e=>{if(e.target===$('photoViewer'))closePhotoViewer()});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&$('photoViewer').classList.contains('open'))closePhotoViewer()});
 document.addEventListener('click',e=>{const img=e.target.closest('.time-photo,#initialPhotoThumb img,#momentPhotoPreview img');if(!img)return;openPhotoViewer(img.dataset.photoId||'initial-position-photo')});
 document.addEventListener('keydown',e=>{if((e.key==='Enter'||e.key===' ')&&e.target.matches('.time-photo,#initialPhotoThumb img,#momentPhotoPreview img')){e.preventDefault();openPhotoViewer(e.target.dataset.photoId||'initial-position-photo')}});
 
+$('clearPhotosBtn').addEventListener('click',clearAllPhotos);$('clearAllDataBtn').addEventListener('click',clearAllRecords);
 $('exportBtn').addEventListener('click',exportData);$('importBtn').addEventListener('click',()=>$('importFile').click());$('importFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{const raw=JSON.parse(await file.text());const incoming=normalizeIncoming(raw);if(!incoming)throw new Error('invalid');const incomingScale=Number(raw.metricScaleVersion||0)>=2||Number(raw.version||0)>=3?2:1;if(incomingScale<2){const expand=v=>({1:1,2:3,3:5}[Number(v)]||3),expandSunk=v=>({1:5,2:3,3:1}[Number(v)]||3);incoming.forEach(d=>(d.games||[]).forEach(g=>{if(g.openingState?.metrics){g.openingState.metrics[HOPE]=expand(g.openingState.metrics[HOPE]);g.openingState.metrics[SUN]=expandSunk(g.openingState.metrics[SUN]);g.openingState.metrics[CHANCE]=Math.max(1,Math.min(5,Number(g.openingState.metrics[CHANCE])||3))}(g.events||[]).forEach(e=>{if(e.metrics){e.metrics[HOPE]=expand(e.metrics[HOPE]);e.metrics[SUN]=expandSunk(e.metrics[SUN]);e.metrics[CHANCE]=Math.max(1,Math.min(5,Number(e.metrics[CHANCE])||3))}})}))}const map=new Map(workspace.days.map(d=>[d.id,d]));incoming.forEach(d=>{if(d&&d.id&&Array.isArray(d.games)){if(!Number.isFinite(Number(d.maxBudget)))d.maxBudget=(Number(d.budget)||2000)+500;map.set(d.id,d)}});workspace.days=[...map.values()];workspace.metricScaleVersion=2;save();renderHome();showView('home');toast(`${incoming.length}件のプレイ日を読み込みました`)}catch(_){toast('このファイルをモチログのバックアップとして読み込めませんでした',4000)}e.target.value=''});
 
 
